@@ -1,3 +1,5 @@
+# License
+
 Files within this repository are released under the MIT License.
 Contributors are listed at the top of each file.
 
