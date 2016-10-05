@@ -2,7 +2,7 @@
     "name": "tx-simple-usfm2html_convert",
     "version": "1",
     "type": "conversion",
-    "resource_types": ["bible"],
+    "resource_types": ["bible", "ulb", "udb"],
     "input_format": ["usfm"],
     "output_format": ["html"],
     "options": [],
