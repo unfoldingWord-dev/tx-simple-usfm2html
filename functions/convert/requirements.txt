@@ -1,2 +1,3 @@
+pyparsing
 tx-shared-tools
 git+git://github.com/unfoldingWord-dev/USFM-Tools.git#egg=usfm_tools

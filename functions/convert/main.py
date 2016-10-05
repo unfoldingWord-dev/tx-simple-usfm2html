@@ -10,8 +10,8 @@ import transform_bible
 
 from glob import glob
 
-from general_tools.file_utils import add_file_to_zip
-
+from general_tools.file_utils import add_contents_to_zip
+from aws_tools.s3_handler import S3Handler
 
 def log_message(log, message):
     print(message)
@@ -72,8 +72,7 @@ def handle(event, context):
 
     success = False
     try:
-        if resource == 'bible':
-            # call with closing to be sure the temp files get cleaned up
+        if resource == 'bible' or resource == 'ulb' or resource == 'udb':
             converter = transform_bible.TransformBible(source, output_dir, options)
             try:
                 converter.run()
@@ -83,19 +82,16 @@ def handle(event, context):
                 log.extend(converter.log)
                 errors.extend(converter.errors)
                 warnings.extend(converter.warnings)
-        # --- Add other resources here when implemented ---
         else:
             raise Exception('Resource "{0}" not currently supported'.format(resource))
 
-        if not len(errors):
-            zip_file = os.path.join(tempfile.gettempdir(), context.aws_request_id+'.zip')
-            for filename in glob(os.path.join(output_dir, '*.html')):
-                add_file_to_zip(zip_file, filename, os.path.basename(filename))
-            log_message(log, "Uploading {0} to {1}/{2}".format(os.path.basename(zip_file), cdn_bucket, cdn_file))
-            cdn_handler = S3Handler(cdn_bucket)
-            cdn_handler.upload_file(zip_file, cdn_file)
-            log_message(log, "Upload was successful.")
-            success = True
+        zip_file = os.path.join(tempfile.gettempdir(), context.aws_request_id+'.zip')
+        add_contents_to_zip(zip_file, output_dir)
+        log_message(log, "Uploading {0} to {1}/{2}".format(os.path.basename(zip_file), cdn_bucket, cdn_file))
+        cdn_handler = S3Handler(cdn_bucket)
+        cdn_handler.upload_file(zip_file, cdn_file)
+        log_message(log, "Upload was successful.")
+        success = True
     except Exception as e:
         error_message(errors, e.message)
 
