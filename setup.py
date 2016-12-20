@@ -10,28 +10,15 @@ from setuptools.command.install import install
 def read(f_name):
     return open(os.path.join(os.path.dirname(__file__), f_name)).read()
 
-
-class PostInstallCommand(install):
-    """
-    Register this converter with tX-manager
-    """
-    def run(self):
-        from register import register
-        register()
-
-        install.run(self)
-
-
 setup(
     name="tx-simple-usfm2html",
-    version="0.0.1",
+    version="1.0.0",
     author="unfoldingWord",
     author_email="unfoldingword.org",
-    description="Lambda function to conver USFM to HTML"
+    description="Lambda function to conver USFM to HTML",
     license="MIT",
     keywords="unfoldingWord publish",
     url="https://github.org/unfoldingWord-dev/tx-simple-usfm2html",
-    packages=['register', 'obs'],
     long_description=read('README.md'),
     classifiers=[],
     dependency_links=[
@@ -43,7 +30,4 @@ setup(
         'uw_tools'
     ],
     test_suite='tests',
-    cmdclass={
-        'install': PostInstallCommand
-    }
 )
