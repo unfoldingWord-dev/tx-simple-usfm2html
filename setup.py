@@ -1,33 +1,28 @@
-import os
-from setuptools import setup
-from setuptools.command.install import install
+from setuptools import setup, find_packages
+from codecs import open
+from os import path
+
+here = path.abspath(path.dirname(__file__))
 
 
-# Utility function to read the README file.
-# Used for the long_description.  It's nice, because now 1) we have a top level
-# README file and 2) it's easier to type in the README file than to put a raw
-# string in below ...
-def read(f_name):
-    return open(os.path.join(os.path.dirname(__file__), f_name)).read()
+with open(path.join(here, "README.md"), "r") as f:
+    long_description = f.read()
 
 setup(
     name="tx-simple-usfm2html",
     version="1.0.0",
+    description="USFM-to-HTML conversion",
+    long_description=long_description,
+    url="https://github.com/unfoldingWord-dev/tx-simple-usfm2html",
     author="unfoldingWord",
-    author_email="unfoldingword.org",
-    description="Lambda function to conver USFM to HTML",
+    author_email="info@door43.org",
     license="MIT",
-    keywords="unfoldingWord publish",
-    url="https://github.org/unfoldingWord-dev/tx-simple-usfm2html",
-    long_description=read('README.md'),
-    classifiers=[],
-    dependency_links=[
-        'git+git://github.com/unfoldingWord-dev/uw_tools.git#egg=uw_tools',
+    classifiers=[
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 2.7",
     ],
-    install_requires=[
-        'markdown',
-        'requests',
-        'uw_tools'
-    ],
-    test_suite='tests',
+    keywords=["usfm", "html"],
+    packages=find_packages(),
+    install_requires=["future"],
+    test_suite="tests"
 )
